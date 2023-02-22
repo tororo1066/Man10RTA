@@ -34,8 +34,15 @@ class RTATask: Thread() {
                 }
             }
             data.count = true
-            SJavaPlugin.plugin.config.getConfigurationSection(data.name)?.set("clearTime","${e.player.uniqueId}:${e.player.name}:${time}")
-            SJavaPlugin.plugin.saveConfig()
+            if (data.isWriteAll){
+                val list = SJavaPlugin.plugin.config.getConfigurationSection(data.name)?.getStringList("clearTime")?:return@register
+                list.add("${e.player.uniqueId}:${e.player.name}:${between(Date(),startDate)}")
+                SJavaPlugin.plugin.config.getConfigurationSection(data.name)?.set("clearTime",list)
+                SJavaPlugin.plugin.saveConfig()
+            } else {
+                SJavaPlugin.plugin.config.getConfigurationSection(data.name)?.set("clearTime","${e.player.uniqueId}:${e.player.name}:${time}")
+                SJavaPlugin.plugin.saveConfig()
+            }
             Bukkit.broadcast(Component.text(Man10RTA.prefix.toString() + "§e§l${e.player.name}§fが§r").append(data.displayName).append(Component.text("§fを達成しました！ §d§l達成時間: $time")),Server.BROADCAST_CHANNEL_USERS)
 
             if (data.isKillServer){
