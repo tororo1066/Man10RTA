@@ -1,0 +1,7 @@
+name: Man10RTA
+version: '${version}'
+main: tororo1066.man10rta.Man10RTA
+api-version: 1.19
+commands:
+  rta:
+    permission: rta.op
