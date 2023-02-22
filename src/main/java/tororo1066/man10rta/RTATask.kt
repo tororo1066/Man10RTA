@@ -29,6 +29,7 @@ class RTATask: Thread() {
                     val list = SJavaPlugin.plugin.config.getConfigurationSection(data.name)?.getStringList("clearTime")?:return@register
                     list.add("${e.player.uniqueId}:${e.player.name}:${between(Date(),startDate)}")
                     SJavaPlugin.plugin.config.getConfigurationSection(data.name)?.set("clearTime",list)
+                    SJavaPlugin.plugin.saveConfig()
                     return@register
                 }
             }
