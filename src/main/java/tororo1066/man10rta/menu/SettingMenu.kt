@@ -18,11 +18,12 @@ class SettingMenu: LargeSInventory(SJavaPlugin.plugin, "SettingMenu") {
                 .addLore(if (data.isEnabled) "§a§l有効" else "§c§l無効")
                 .addLore(if (data.isKillServer) "§a§lサーバーを落とす" else "§c§lサーバーを落とさない")
                 .addLore(if (data.isWriteAll) "§a§l全てのプレイヤーを記録する" else "§c§l全てのプレイヤーを記録しない")
-                .addLore("§e§lシフト左クリックで有効化切り替え")
+                .addLore("")
+                .addLore("§e§l左クリックで有効化切り替え")
                 .addLore("§d§lシフト右クリックでサーバー落とし切り替え")
                 .addLore("§b§l右クリックで全てのプレイヤー記録切り替え")
                 .setCanClick(false).setClickEvent { e ->
-                    if (e.click == ClickType.SHIFT_LEFT){
+                    if (e.click == ClickType.LEFT){
                         data.isEnabled = !data.isEnabled
                         SJavaPlugin.plugin.config.set("${it.key.key}.isEnabled", data.isEnabled)
                         SJavaPlugin.plugin.saveConfig()

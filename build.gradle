@@ -26,10 +26,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compileOnly fileTree(dir: 'libs', include: '*.jar')
-    api 'com.github.tororo1066.TororoPluginAPI:TororoPluginAPI:3ef497bb59'
+    api 'com.github.tororo1066.TororoPluginAPI:TororoPluginAPI:2527c4527e'
 }
 
 import org.apache.tools.ant.filters.ReplaceTokens

@@ -25,8 +25,8 @@ class RTATaskData {
             val data = RTATaskData()
             data.advancement = advancement
             data.name = advancement.key.key
-            data.displayName = advancement.display?.title()?:Component.text("§c§l不明")
-            data.itemStack = advancement.display?.icon()?:ItemStack(Material.STONE)
+            data.displayName = advancement.display!!.title()
+            data.itemStack = advancement.display!!.icon()
 
             val config = SJavaPlugin.plugin.config.getConfigurationSection(data.name)?:return data
             data.isEnabled = config.getBoolean("isEnabled")
