@@ -19,6 +19,7 @@ import tororo1066.tororopluginapi.SStr
 import tororo1066.tororopluginapi.sEvent.SEvent
 import java.time.Duration
 import java.util.*
+import java.util.function.Consumer
 
 class RTATask: Thread() {
 
@@ -80,24 +81,42 @@ class RTATask: Thread() {
             Bukkit.getOnlinePlayers().forEach {
                 it.sendActionBar(SStr("&a&l経過時間: &d&l${between(Date(),startDate)}").toPaperComponent())
             }
-            sleep(50)
+            sleep(1000)
         }
 
-        Bukkit.getScheduler().runTask(SJavaPlugin.plugin, Runnable {
-            Bukkit.getOnlinePlayers().forEach {
-                it.playSound(it.location, Sound.ENTITY_ENDER_DRAGON_DEATH, 1f, 1f)
-                it.playSound(it.location, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 0.5f)
-                it.showTitle(Title.title(finishedAdvancement?.let { it1 ->
-                    Component.text("進捗")
-                        .color(TextColor.color(0x00FF00))
-                        .append(Component.text("["))
-                        .append(it1)
-                        .append(Component.text("]"))
-                        .color(null)
-                        .append(Component.text("を達成した")) }?:return@forEach,
-                    Component.text("§d§l達成者：${finishedPlayer}"), Title.Times.of(Duration.ZERO, Duration.ofSeconds(5), Duration.ofSeconds(1))))
-            }
-        })
+        if (SJavaPlugin.isFolia){
+            Bukkit.getGlobalRegionScheduler().run(SJavaPlugin.plugin, Consumer {
+                Bukkit.getOnlinePlayers().forEach {
+                    it.playSound(it.location, Sound.ENTITY_ENDER_DRAGON_DEATH, 1f, 1f)
+                    it.playSound(it.location, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 0.5f)
+                    it.showTitle(Title.title(finishedAdvancement?.let { it1 ->
+                        Component.text("進捗")
+                            .color(TextColor.color(0x00FF00))
+                            .append(Component.text("["))
+                            .append(it1)
+                            .append(Component.text("]"))
+                            .color(null)
+                            .append(Component.text("を達成した")) }?:return@forEach,
+                        Component.text("§d§l達成者：${finishedPlayer}"), Title.Times.of(Duration.ZERO, Duration.ofSeconds(5), Duration.ofSeconds(1))))
+                }
+            })
+        } else {
+            Bukkit.getScheduler().runTask(SJavaPlugin.plugin, Runnable {
+                Bukkit.getOnlinePlayers().forEach {
+                    it.playSound(it.location, Sound.ENTITY_ENDER_DRAGON_DEATH, 1f, 1f)
+                    it.playSound(it.location, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 0.5f)
+                    it.showTitle(Title.title(finishedAdvancement?.let { it1 ->
+                        Component.text("進捗")
+                            .color(TextColor.color(0x00FF00))
+                            .append(Component.text("["))
+                            .append(it1)
+                            .append(Component.text("]"))
+                            .color(null)
+                            .append(Component.text("を達成した")) }?:return@forEach,
+                        Component.text("§d§l達成者：${finishedPlayer}"), Title.Times.of(Duration.ZERO, Duration.ofSeconds(5), Duration.ofSeconds(1))))
+                }
+            })
+        }
 
         interrupt()
     }
@@ -112,13 +131,15 @@ class RTATask: Thread() {
         val hour = time / 3600000
         val minute = (time - hour * 3600000) / 60000
         val second = (time - hour * 3600000 - minute * 60000) / 1000
-        val millisecond = time - hour * 3600000 - minute * 60000 - second * 1000
+//        val millisecond = time - hour * 3600000 - minute * 60000 - second * 1000
         return "${hour}:${if (minute.toString().length == 1) "0${minute}" else minute}" +
-                ":${if (second.toString().length == 1) "0${second}" else second}" +
-                ".${when(millisecond.toString().length) {
-                    1 -> "00${millisecond}"
-                    2 -> "0${millisecond}"
-                    else -> millisecond
-                }}"
+                ":${if (second.toString().length == 1) "0${second}" else second}"
+//        return "${hour}:${if (minute.toString().length == 1) "0${minute}" else minute}" +
+//                ":${if (second.toString().length == 1) "0${second}" else second}" +
+//                ".${when(millisecond.toString().length) {
+//                    1 -> "00${millisecond}"
+//                    2 -> "0${millisecond}"
+//                    else -> millisecond
+//                }}"
     }
 }

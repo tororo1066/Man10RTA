@@ -3,9 +3,12 @@ package tororo1066.man10rta
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
+import org.bukkit.GameRule
 import org.bukkit.Sound
+import tororo1066.man10rta.Man10RTA.Companion.sendPrefixMsg
 import tororo1066.man10rta.menu.SettingMenu
 import tororo1066.tororopluginapi.SJavaPlugin
+import tororo1066.tororopluginapi.SStr
 import tororo1066.tororopluginapi.annotation.SCommandBody
 import tororo1066.tororopluginapi.sCommand.SCommand
 import tororo1066.tororopluginapi.sCommand.SCommandArg
@@ -46,4 +49,29 @@ class Command: SCommand("rta",Man10RTA.prefix.toString(),"rta.op") {
             SJavaPlugin.plugin.saveConfig()
             it.sender.sendMessage("cleared")
         }
+
+    @SCommandBody
+    val hideGiveAllAdvancements = command().addArg(SCommandArg("hideGiveAllAdv")).setPlayerExecutor {
+        if (SJavaPlugin.isFolia){
+            Bukkit.getGlobalRegionScheduler().execute(SJavaPlugin.plugin) {
+                it.sender.world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false)
+            }
+        } else {
+            it.sender.world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false)
+        }
+
+        it.sender.performCommand("minecraft:advancement grant ${it.sender.name} everything")
+        if (SJavaPlugin.isFolia){
+            Bukkit.getGlobalRegionScheduler().runDelayed(SJavaPlugin.plugin, { _ ->
+                it.sender.world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, true)
+                it.sender.sendPrefixMsg(SStr("&a付与済み"))
+            },20)
+
+        } else {
+            Bukkit.getScheduler().runTaskLater(SJavaPlugin.plugin, Runnable {
+                it.sender.world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, true)
+                it.sender.sendPrefixMsg(SStr("&a付与済み"))
+            },20)
+        }
+    }
 }
