@@ -85,21 +85,27 @@ class RTATask: Thread() {
         }
 
         if (SJavaPlugin.isFolia){
-            Bukkit.getGlobalRegionScheduler().run(SJavaPlugin.plugin, Consumer {
+            Bukkit.getGlobalRegionScheduler().run(SJavaPlugin.plugin) {
                 Bukkit.getOnlinePlayers().forEach {
                     it.playSound(it.location, Sound.ENTITY_ENDER_DRAGON_DEATH, 1f, 1f)
                     it.playSound(it.location, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1f, 0.5f)
-                    it.showTitle(Title.title(finishedAdvancement?.let { it1 ->
-                        Component.text("進捗")
-                            .color(TextColor.color(0x00FF00))
-                            .append(Component.text("["))
-                            .append(it1)
-                            .append(Component.text("]"))
-                            .color(null)
-                            .append(Component.text("を達成した")) }?:return@forEach,
-                        Component.text("§d§l達成者：${finishedPlayer}"), Title.Times.of(Duration.ZERO, Duration.ofSeconds(5), Duration.ofSeconds(1))))
+                    it.showTitle(
+                        Title.title(
+                            finishedAdvancement?.let { it1 ->
+                                Component.text("進捗")
+                                    .color(TextColor.color(0x00FF00))
+                                    .append(Component.text("["))
+                                    .append(it1)
+                                    .append(Component.text("]"))
+                                    .color(null)
+                                    .append(Component.text("を達成した"))
+                            } ?: return@forEach,
+                            Component.text("§d§l達成者：${finishedPlayer}"),
+                            Title.Times.of(Duration.ZERO, Duration.ofSeconds(5), Duration.ofSeconds(1))
+                        )
+                    )
                 }
-            })
+            }
         } else {
             Bukkit.getScheduler().runTask(SJavaPlugin.plugin, Runnable {
                 Bukkit.getOnlinePlayers().forEach {

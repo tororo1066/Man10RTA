@@ -15,6 +15,7 @@ import tororo1066.tororopluginapi.sCommand.SCommandArg
 import tororo1066.tororopluginapi.sCommand.SCommandArgType
 import java.time.Duration
 
+@Suppress("UNUSED")
 class Command: SCommand("rta",Man10RTA.prefix.toString(),"rta.op") {
 
     @SCommandBody

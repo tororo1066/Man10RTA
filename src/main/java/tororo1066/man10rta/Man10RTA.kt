@@ -19,20 +19,7 @@ class Man10RTA: SJavaPlugin() {
         }
     }
 
-    override fun onLoad() {
-        isFolia = try {
-            Bukkit.getGlobalRegionScheduler()
-            true
-        } catch (e: Exception){
-            false
-        }
-        Bukkit.broadcastMessage(isFolia.toString())
-    }
-
     override fun onStart() {
-
-        Bukkit.broadcastMessage(isFolia.toString())
-
         Command()
         saveDefaultConfig()
         Bukkit.advancementIterator().forEach {
